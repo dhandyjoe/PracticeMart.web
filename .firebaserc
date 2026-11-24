@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "practicemart-fdc73"
+  },
+  "targets": {
+    "practicemart-fdc73": {
+      "hosting": {
+        "app": ["practicemart-fdc73"],
+        "bank": ["practicemart-fdc73-bank"]
+      }
+    }
+  }
+}

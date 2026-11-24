@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form kontak</title>
+<!-- Iframe di dalam iframe FAQ (PRD FR-HELP-03). Pesan tidak dikirim ke server mana pun. -->
+<style>
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #1f2933; background: #fafbfc; }
+  form { display: flex; flex-direction: column; gap: 8px; padding: 14px; }
+  label { font-size: 14px; font-weight: 700; }
+  select, input, textarea { box-sizing: border-box; width: 100%; border: 1px solid #8a8a8a; border-radius: 4px; background: #fff; font: inherit; font-size: 15px; }
+  select, input { height: 38px; padding: 0 10px; }
+  textarea { padding: 8px 10px; resize: vertical; }
+  textarea[aria-invalid="true"] { border-color: #b42318; }
+  .error { font-size: 13px; font-weight: 700; color: #b42318; }
+  #btn-send { height: 42px; border: 0; border-radius: 4px; background: #1a5fb4; color: #fff; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+  #send-result { padding: 18px 14px; font-size: 15px; line-height: 1.5; }
+  #ticket { font-family: monospace; }
+</style>
+</head>
+<body>
+<form id="contact-form" novalidate>
+  <label for="topic">Topik</label>
+  <select id="topic" data-testid="topic" name="topic">
+    <option>Pesanan</option>
+    <option>Pembayaran</option>
+    <option>PracticePay</option>
+    <option>Akun</option>
+  </select>
+  <label for="order">Order ID (opsional)</label>
+  <input id="order" data-testid="order" name="order" placeholder="PM-20260115-0001" autocomplete="off">
+  <label for="message">Pesan</label>
+  <textarea id="message" data-testid="message" name="message" rows="4" aria-describedby="message-error"></textarea>
+  <span id="message-error" data-testid="message-error" class="error" role="alert" hidden>Pesan wajib diisi</span>
+  <button id="btn-send" data-testid="btn-send" type="submit">Kirim</button>
+</form>
+<div id="send-result" data-testid="send-result" role="status" hidden>
+  Pesan terkirim. Nomor tiket: <strong id="ticket" data-testid="ticket"></strong>
+</div>
+<script>
+  (function () {
+    var form = document.getElementById("contact-form");
+    var message = document.getElementById("message");
+    var error = document.getElementById("message-error");
+    message.addEventListener("input", function () {
+      error.hidden = true;
+      message.removeAttribute("aria-invalid");
+    });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (!message.value.trim()) {
+        error.hidden = false;
+        message.setAttribute("aria-invalid", "true");
+        return;
+      }
+      var date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jakarta" }).format(new Date()).replace(/-/g, "");
+      var seq = String(Math.floor(Math.random() * 9000) + 1000);
+      document.getElementById("ticket").textContent = "CS-" + date + "-" + seq;
+      form.hidden = true;
+      document.getElementById("send-result").hidden = false;
+    });
+  })();
+</script>
+</body>
+</html>

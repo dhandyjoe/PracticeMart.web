@@ -1,0 +1,36 @@
+.region {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 40;
+}
+
+.snackbar {
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 12px 12px 18px;
+  border-radius: var(--pm-radius-md);
+  background: var(--pm-dark-surface-raised);
+  color: var(--pm-on-dark);
+  font-size: 14px;
+  box-shadow: var(--pm-shadow);
+}
+
+.action {
+  min-height: 36px;
+  padding: 6px 8px;
+  border: 0;
+  background: transparent;
+  color: var(--pm-dark-accent);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.action:hover {
+  color: var(--pm-dark-accent);
+  text-decoration: underline;
+}

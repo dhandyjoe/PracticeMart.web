@@ -1,0 +1,129 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--pm-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog {
+  width: min(880px, calc(100vw - 48px));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--pm-surface);
+  box-shadow: var(--pm-shadow);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.counter,
+.zoomLevel {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.zoomLevel {
+  padding: 2px 8px;
+  border-radius: var(--pm-radius-pill);
+  background: var(--pm-surface-subtle);
+  font-family: var(--pm-font-mono);
+}
+
+.actions {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+
+.actions button,
+.arrow {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--pm-surface-subtle);
+  color: var(--pm-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.actions button:disabled {
+  color: var(--pm-ink-disabled);
+  cursor: not-allowed;
+}
+
+.stage {
+  position: relative;
+  height: 520px;
+  overflow: hidden;
+  border-radius: var(--pm-radius-md);
+  background: var(--pm-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-in;
+}
+
+.zoomBox {
+  transition: transform 150ms;
+}
+
+.image {
+  width: 420px;
+  height: 420px;
+  border-radius: var(--pm-radius-md);
+}
+
+.arrow {
+  position: absolute;
+  top: calc(50% - 22px);
+  background: var(--pm-surface);
+  box-shadow: var(--pm-shadow);
+}
+
+.prev {
+  left: 12px;
+}
+
+.next {
+  right: 12px;
+}
+
+.thumbs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.thumb {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--pm-radius-sm);
+  overflow: hidden;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.thumb > * {
+  width: 100%;
+  height: 100%;
+}
+
+.thumb[aria-selected="true"] {
+  border-color: var(--pm-primary);
+  opacity: 1;
+}

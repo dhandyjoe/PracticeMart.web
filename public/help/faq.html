@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ PracticeMart</title>
+<!-- Dimuat di iframe same-origin oleh /help (PRD FR-HELP-01, architecture §10.2). Gaya "situs lain" (design §2.1). -->
+<style>
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #1f2933; background: #fafbfc; }
+  header { padding: 14px 16px; background: #0e7c66; color: #fff; }
+  header h1 { margin: 0 0 10px; font-size: 18px; }
+  #faq-search { width: 100%; box-sizing: border-box; height: 42px; padding: 0 12px; border: 0; border-radius: 4px; font: inherit; font-size: 15px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { border-bottom: 1px solid #e3e6eb; }
+  li button { width: 100%; display: flex; justify-content: space-between; gap: 12px; padding: 14px 16px; border: 0; background: transparent; font: inherit; font-size: 15px; font-weight: 700; color: #1f2933; text-align: left; cursor: pointer; }
+  li button::after { content: "+"; }
+  li button[aria-expanded="true"]::after { content: "−"; }
+  li p { margin: 0; padding: 0 16px 14px; font-size: 14px; line-height: 1.55; color: #3a4350; }
+  #faq-empty { padding: 16px; font-size: 14px; color: #5b6573; }
+  section { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  #btn-contact { align-self: flex-start; height: 42px; padding: 0 16px; border: 0; border-radius: 4px; background: #1a5fb4; color: #fff; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+  #contact-frame { width: 100%; height: 360px; border: 1px solid #d0d5dd; border-radius: 4px; background: #fff; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pertanyaan populer</h1>
+  <label for="faq-search" class="sr">Cari pertanyaan</label>
+  <input id="faq-search" data-testid="faq-search" type="search" placeholder="Cari pertanyaan, mis. COD" autocomplete="off">
+</header>
+<ul id="faq-list" data-testid="faq-list"></ul>
+<p id="faq-empty" data-testid="faq-empty" hidden>Tidak ada pertanyaan yang cocok.</p>
+<section aria-labelledby="h-contact">
+  <h2 id="h-contact" style="margin: 0; font-size: 16px">Masih butuh bantuan?</h2>
+  <button id="btn-contact" data-testid="btn-contact" type="button">Hubungi kami</button>
+  <!-- Iframe bersarang (FR-HELP-03). -->
+  <iframe id="contact-frame" data-testid="contact-frame" src="contact.html" title="Form kontak"></iframe>
+</section>
+<script>
+  (function () {
+    var faqs = [
+      ["Bagaimana cara melacak pesanan?", "Buka Pesanan Saya lalu pilih pesanan. Status terbaru tampil setiap halaman dibuka atau dimuat ulang, sama di web maupun aplikasi Android."],
+      ["Kenapa Same Day tidak tersedia?", "Same Day hanya tersedia untuk alamat pengiriman di DKI Jakarta."],
+      ["Batas COD berapa?", "Bayar di tempat bisa dipakai untuk total belanja maksimal Rp1.000.000."],
+      ["Voucher saya tidak bisa dipakai", "Periksa minimal belanja dan masa berlaku voucher. Hanya satu voucher yang bisa aktif per pesanan."],
+      ["Apakah keranjang di web sama dengan di aplikasi?", "Ya. Selama masuk dengan akun yang sama, keranjang, pesanan, dan saldo PracticePay sama setelah halaman dimuat ulang."]
+    ];
+    var list = document.getElementById("faq-list");
+    var empty = document.getElementById("faq-empty");
+    var search = document.getElementById("faq-search");
+
+    faqs.forEach(function (f, i) {
+      var li = document.createElement("li");
+      li.setAttribute("data-testid", "faq-item");
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.id = "faq-q-" + i;
+      btn.setAttribute("aria-expanded", "false");
+      btn.setAttribute("aria-controls", "faq-a-" + i);
+      btn.textContent = f[0];
+      var p = document.createElement("p");
+      p.id = "faq-a-" + i;
+      p.hidden = true;
+      p.textContent = f[1];
+      btn.addEventListener("click", function () {
+        var open = btn.getAttribute("aria-expanded") === "true";
+        btn.setAttribute("aria-expanded", String(!open));
+        p.hidden = open;
+      });
+      li.appendChild(btn);
+      li.appendChild(p);
+      list.appendChild(li);
+    });
+
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      var shown = 0;
+      Array.prototype.forEach.call(list.children, function (li, i) {
+        var match = !q || (faqs[i][0] + " " + faqs[i][1]).toLowerCase().indexOf(q) >= 0;
+        li.hidden = !match;
+        if (match) shown++;
+      });
+      empty.hidden = shown > 0;
+    });
+
+    // FR-HELP-01: halaman induk menampilkan toast "Menghubungkan ke CS PracticeMart…".
+    document.getElementById("btn-contact").addEventListener("click", function () {
+      window.parent.postMessage({ type: "contact" }, location.origin);
+    });
+  })();
+</script>
+</body>
+</html>

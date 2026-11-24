@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-11-20T03:02:14.751Z",
+        "reason": "docs/design.md §2.1: halaman 3DS PracticeBank & Pusat Bantuan sengaja memakai Arial/Helvetica agar terasa situs pihak lain"
+      }
+    ]
+  }
+}

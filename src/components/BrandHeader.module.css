@@ -1,0 +1,39 @@
+.header {
+  background: var(--pm-surface);
+  border-bottom: 1px solid var(--pm-outline);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--pm-ink);
+  text-decoration: none;
+}
+
+.logo:hover {
+  color: var(--pm-ink);
+}
+
+.mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--pm-primary);
+  color: var(--pm-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  font-family: var(--pm-font-num);
+  font-size: 20px;
+  font-weight: 700;
+}

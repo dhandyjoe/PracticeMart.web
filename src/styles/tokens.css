@@ -1,0 +1,112 @@
+/* Token design.md §2 & §14.2. Jangan menulis hex langsung di komponen. */
+:root {
+  --pm-primary: #0e7c66;
+  --pm-primary-pressed: #0a5e4d;
+  --pm-primary-container: #ddf0ea;
+  --pm-on-primary: #ffffff;
+  --pm-ink: #12161c;
+  --pm-ink-secondary: #3a4350;
+  --pm-ink-muted: #5b6573;
+  --pm-bg: #f4f6f5;
+  --pm-surface: #ffffff;
+  --pm-surface-disabled: #e3e6eb;
+  --pm-outline: #e3e6eb;
+  --pm-outline-strong: #d5dae1;
+  --pm-error: #b42318;
+  --pm-error-strong: #8a1c12;
+  --pm-error-container: #fdecea;
+  --pm-on-error: #ffffff;
+  /* Teks di atas latar gelap/berwarna kuat (saldo, banner, badge, snackbar); sama di kedua tema. */
+  --pm-on-dark: #ffffff;
+  --pm-hint-bg: #fde68a;
+  --pm-hint-fg: #4a3800;
+  --pm-warning: #b4400a;
+  --pm-warning-strong: #8a3108;
+  --pm-warning-container: #fff1e8;
+  --pm-warning-outline: #f6c9a9;
+  --pm-primary-surface: #eef7f4;
+  --pm-primary-outline: #9cc9bd;
+  --pm-surface-subtle: #f1f3f6;
+  --pm-ink-disabled: #9aa4b2;
+  --pm-track: #c9cfd8;
+  --pm-dark-surface: #12161c;
+  --pm-dark-surface-raised: #262c35;
+  --pm-dark-accent: #7ce3a4;
+  --pm-dark-muted: #d5dae1;
+  --pm-info-strong: #1d3a9e;
+  --pm-info-container: #e0e8fd;
+  --pm-scrim: rgb(18 22 28 / 0.55);
+  --pm-shadow: 0 12px 32px rgb(18 22 28 / 0.16);
+
+  /* Placeholder gambar per kategori (design §4.18): latar / ikon. */
+  --pm-cat-fashion-bg: #ddf0ea;
+  --pm-cat-fashion-fg: #0a5e4d;
+  --pm-cat-elektronik-bg: #fcebd9;
+  --pm-cat-elektronik-fg: #7a3606;
+  --pm-cat-olahraga-bg: #e0e8fd;
+  --pm-cat-olahraga-fg: #1d3a9e;
+  --pm-cat-rumah-tangga-bg: #eee6fc;
+  --pm-cat-rumah-tangga-fg: #5b21b6;
+  --pm-cat-buku-bg: #eef0f3;
+  --pm-cat-buku-fg: #5b6573;
+  --pm-cat-kecantikan-bg: #fdecea;
+  --pm-cat-kecantikan-fg: #8a1c12;
+
+  --pm-radius-sm: 10px;
+  --pm-radius-card: 14px;
+  --pm-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --pm-radius-md: 12px;
+  --pm-radius-lg: 24px;
+  --pm-radius-pill: 999px;
+
+  --pm-font-body: 'Inter', system-ui, sans-serif;
+  --pm-font-num: 'Space Grotesk', 'Inter', sans-serif;
+}
+
+/* Tema gelap: usulan design §2.2 (belum didesain penuh; kontras utama sudah dicek ≥ 4,5:1). */
+:root[data-theme="dark"] {
+  --pm-bg: #0b0e12;
+  --pm-surface: #12161c;
+  --pm-surface-subtle: #1b2027;
+  --pm-surface-disabled: #262c35;
+  --pm-outline: #262c35;
+  --pm-outline-strong: #3a4350;
+  --pm-ink: #f1f3f6;
+  --pm-ink-secondary: #d5dae1;
+  --pm-ink-muted: #9aa4b2;
+  --pm-primary: #3fb59a;
+  --pm-primary-pressed: #7ce3a4;
+  --pm-on-primary: #04241d;
+  --pm-primary-container: #12392f;
+  --pm-primary-surface: #12392f;
+  --pm-error-container: #3a1512;
+  --pm-error-strong: #f5b5ad;
+  --pm-warning-container: #3a2010;
+  --pm-warning-strong: #f6c9a9;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --pm-bg: #0b0e12;
+    --pm-surface: #12161c;
+    --pm-surface-subtle: #1b2027;
+    --pm-surface-disabled: #262c35;
+    --pm-outline: #262c35;
+    --pm-outline-strong: #3a4350;
+    --pm-ink: #f1f3f6;
+    --pm-ink-secondary: #d5dae1;
+    --pm-ink-muted: #9aa4b2;
+    --pm-primary: #3fb59a;
+    --pm-primary-pressed: #7ce3a4;
+    --pm-on-primary: #04241d;
+    --pm-primary-container: #12392f;
+    --pm-primary-surface: #12392f;
+    --pm-error-container: #3a1512;
+    --pm-error-strong: #f5b5ad;
+    --pm-warning-container: #3a2010;
+    --pm-warning-strong: #f6c9a9;
+    color-scheme: dark;
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "firestore": {
+    "rules": "firebase/firestore.rules"
+  },
+  "hosting": [
+    {
+      "target": "app",
+      "public": "dist",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [{ "source": "**", "destination": "/index.html" }]
+    },
+    {
+      "target": "bank",
+      "public": "bank",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+    }
+  ],
+  "emulators": {
+    "auth": { "port": 9099 },
+    "firestore": { "port": 8080 },
+    "ui": { "enabled": true, "port": 4000 },
+    "singleProjectMode": true
+  }
+}

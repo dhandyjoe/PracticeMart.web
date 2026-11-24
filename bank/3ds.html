@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PracticeBank SecureCode</title>
+<!-- Site kedua (origin berbeda) untuk 3D Secure: architecture §10.1, PRD FR-PAYM-07. Statis, tanpa Firebase. -->
+<style>
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #1f2933; background: #f2f4f7; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #1a3d6d; color: #fff; }
+  header strong { font-size: 16px; }
+  header span { font-size: 11px; font-weight: 700; padding: 3px 6px; border: 1px solid #fff; border-radius: 3px; }
+  main, form { display: flex; flex-direction: column; gap: 12px; }
+  main { padding: 16px; }
+  p { margin: 0; font-size: 14px; line-height: 1.5; }
+  label { font-size: 13px; font-weight: 700; }
+  #otp { height: 44px; padding: 0 12px; border: 1px solid #9aa5b1; border-radius: 4px; background: #fff; font-family: monospace; font-size: 20px; letter-spacing: 6px; }
+  #otp[aria-invalid="true"] { border-color: #b42318; }
+  #otp-error { font-size: 13px; font-weight: 700; color: #b42318; }
+  .actions { display: flex; gap: 8px; }
+  button { height: 44px; border-radius: 4px; font: inherit; font-size: 15px; cursor: pointer; }
+  #btn-submit { flex: 1; border: 0; background: #1a5fb4; color: #fff; font-weight: 700; }
+  #btn-cancel { padding: 0 16px; border: 1px solid #9aa5b1; background: #fff; color: #1f2933; }
+  #blocked { color: #b42318; font-weight: 700; }
+</style>
+</head>
+<body>
+<header><strong>PracticeBank</strong><span>SecureCode</span></header>
+<main>
+  <p id="blocked" hidden>Halaman ini hanya bisa dibuka dari PracticeMart.</p>
+  <form id="form" novalidate>
+      <p>Masukkan kode OTP untuk transaksi <strong id="amount" data-testid="amount">IDR 0</strong> di PracticeMart dengan kartu <span id="card" data-testid="card">**** 0000</span>.</p>
+      <label for="otp">Kode OTP</label>
+      <input id="otp" data-testid="otp" name="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-describedby="otp-error">
+      <span id="otp-error" data-testid="otp-error" role="alert" hidden>Kode OTP salah</span>
+      <div class="actions">
+        <button id="btn-submit" data-testid="btn-submit" type="submit">Submit</button>
+        <button id="btn-cancel" data-testid="btn-cancel" type="button">Batal</button>
+      </div>
+  </form>
+</main>
+<script>
+  (function () {
+    var params = new URLSearchParams(location.search);
+    var parent = params.get("parent") || "";
+    // Allowlist origin induk: dev lokal + site Firebase Hosting (termasuk preview channel).
+    var allowed = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(parent) ||
+      /^https:\/\/[a-z0-9-]+(--[a-z0-9-]+)?\.(web\.app|firebaseapp\.com)$/.test(parent);
+    if (!allowed || window.parent === window) {
+      document.getElementById("blocked").hidden = false;
+      document.getElementById("form").hidden = true;
+      return;
+    }
+
+    var amount = Number(params.get("amount")) || 0;
+    document.getElementById("amount").textContent = "IDR " + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    document.getElementById("card").textContent = "**** " + (params.get("card") || "").replace(/\D/g, "").slice(-4);
+
+    var otp = document.getElementById("otp");
+    var error = document.getElementById("otp-error");
+    otp.focus();
+
+    function send(status) {
+      window.parent.postMessage({ type: "3ds-result", status: status }, parent);
+    }
+
+    otp.addEventListener("input", function () {
+      otp.value = otp.value.replace(/\D/g, "").slice(0, 6);
+      error.hidden = true;
+      otp.removeAttribute("aria-invalid");
+    });
+
+    // Kontrak §4.3: OTP 123456 sukses, lainnya "Kode OTP salah".
+    document.getElementById("form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (otp.value === "123456") {
+        send("success");
+      } else {
+        error.hidden = false;
+        otp.setAttribute("aria-invalid", "true");
+      }
+    });
+
+    // FR-PAYM-07: "Batal" memicu confirm() di dalam iframe.
+    document.getElementById("btn-cancel").addEventListener("click", function () {
+      if (window.confirm("Batalkan transaksi?")) send("cancelled");
+    });
+  })();
+</script>
+</body>
+</html>

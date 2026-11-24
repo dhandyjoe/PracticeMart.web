@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  min-width: 1280px;
+  font-family: var(--pm-font-body);
+  color: var(--pm-ink);
+  background: var(--pm-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--pm-primary);
+}
+
+a:hover {
+  color: var(--pm-primary-pressed);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+/* Developer Options "Animasi" OFF (kontrak §5): semua durasi 0. */
+:root[data-animations="off"] *,
+:root[data-animations="off"] *::before,
+:root[data-animations="off"] *::after {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+}
